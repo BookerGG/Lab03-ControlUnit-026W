@@ -1,11 +1,11 @@
 //=========================================================================
 // Name & Email must be EXACTLY as in Gradescope roster!
-// Name: 
-// Email: 
+// Name: Booker Gillies
+// Email: bgill021@ucr.edu
 // 
-// Assignment name: 
-// Lab section: 
-// TA: 
+// Assignment name: LAB3 - Control Unit
+// Lab section: 021W
+// TA: Allan Knight
 // 
 // I hereby certify that I have not received assistance on this assignment,
 // or used code, from ANY outside source other than the instruction team
@@ -40,6 +40,58 @@ module control  (
 // ------------------------------ 
 always @(instr_op)
 begin 
-   // Put your solution here
+    case (instr_op)
+        `OPCODE_R_TYPE: begin       //0x00000024, 0x00000025, 0x00000020, 0x00000022, 0x0000002A, 0x00000027
+            reg_dst <= 1;
+            alu_src <= 0;
+            mem_to_reg <= 0;
+            reg_write <= 1;
+            mem_read <= 0;
+            mem_write <= 0;
+            branch <= 0;
+            alu_op <= 2'b10;
+        end
+        `OPCODE_LOAD_WORD: begin    //0x8C000020
+            reg_dst <= 0;
+            alu_src <= 1;
+            mem_to_reg <= 1;
+            reg_write <= 1;
+            mem_read <= 1;
+            mem_write <= 0;
+            branch <= 0;
+            alu_op <= 2'b00;
+        end
+        `OPCODE_STORE_WORD: begin   //0xAC000064
+            reg_dst <= 0;
+            alu_src <= 1;
+            mem_to_reg <= 0;
+            reg_write <= 0;
+            mem_read <= 0;
+            mem_write <= 1;
+            branch <= 0;
+            alu_op <= 2'b00;
+        end
+        `OPCODE_BRANCH_EQ: begin    //0x10000025
+            reg_dst <= 0;
+            alu_src <= 0;
+            mem_to_reg <= 0;
+            reg_write <= 0;
+            mem_read <= 0;
+            mem_write <= 0;
+            branch <= 1;
+            alu_op <= 2'b01;
+        end
+        `OPCODE_ADDI: begin        //0x20000004
+            reg_dst <= 0;
+            alu_src <= 1;
+            mem_to_reg <= 0;
+            reg_write <= 1;
+            mem_read <= 0;
+            mem_write <= 0;
+            branch <= 0;
+            alu_op <= 2'b00;
+        end
+    endcase
 end 
+
 endmodule
